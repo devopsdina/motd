@@ -26,7 +26,16 @@ action :create do
     end
 
     if platform_family?('debian')
-      target = "/etc/profile.d/chef-#{new_resource.name}"
+      version_9 = node[platform_version].to_f >= 9.0
+
+      template '/etc/pam.d/sshd' do
+        source 'sshd.erb'
+        variables(
+          debian_version_9: version_9
+        )
+        mode permissions
+        action :create
+      end
     end
 
     template target do

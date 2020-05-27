@@ -13,15 +13,24 @@ verifier:
   name: inspec
 
 platforms:
-  - name: Windows2016
+  # - name: Windows2016
+  #   provisioner:
+  #     product_version: latest
+  #     install_strategy: always #chef 12 is on this image, so always install
+  #   driver:
+  #     box: mwrock/Windows2016
+  #   transport:
+  #     transport_name: winrm
+  #     elevated: true
+
+  - name: debian8
     provisioner:
       product_version: latest
-      install_strategy: always #chef 12 is on this image, so always install
+      install_strategy: once
     driver:
-      box: mwrock/Windows2016
+      box: generic/debian8
     transport:
-      transport_name: winrm
-      elevated: true
+      ssh_key: ~/.ssh/id_rsa
 
   - name: debian9
     provisioner:
