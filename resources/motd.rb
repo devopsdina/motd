@@ -7,7 +7,7 @@ property :content, String, required: true
 action :create do
   if platform_family?('windows')
     # windows motd settings
-    registry_key 'HKEY_LOCAL_MACHINE/Software/Microsoft/Windows/CurrentVersion/policies/system' do
+    registry_key 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policies\system' do
       values [
               { name: 'legalnoticecaption', type: :string, data: new_resource.name.to_s },
               { name: 'legalnoticetext', type: :string, data: new_resource.content.to_s },
@@ -50,7 +50,7 @@ end
 
 action :delete do
   if platform_family?('windows')
-    registry_key 'HKEY_LOCAL_MACHINE/Software/Microsoft/Windows/CurrentVersion/policies/system' do
+    registry_key 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policies\system' do
       values [
               { name: 'legalnoticecaption', type: :string, data: new_resource.name.to_s },
               { name: 'legalnoticetext', type: :string, data: new_resource.content.to_s },
