@@ -7,7 +7,7 @@ property :content, String, required: true
 action :create do
   if platform_family?('windows')
     # windows motd settings
-    registry_key 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policies\system' do
+    registry_key 'HKEY_LOCAL_MACHINE/Software/Microsoft/Windows/CurrentVersion/policies/system' do
       values [
               { name: 'legalnoticecaption', type: :string, data: new_resource.name.to_s },
               { name: 'legalnoticetext', type: :string, data: new_resource.content.to_s },
@@ -16,7 +16,6 @@ action :create do
     end
   else
     permissions = '0644'
-    target = '/etc/motd'
 
     # is this machine using update-motd?
     update_motd = (::File.directory? '/etc/update-motd.d')
@@ -38,13 +37,29 @@ action :create do
       end
     end
 
-    template target do
+    template '/etc/motd' do
       source 'motd.erb'
       variables(
         motd_content: new_resource.content.to_s
       )
       mode permissions
       action :create
+    end
+  end
+end
+
+action :delete do
+  if platform_family?('windows')
+    registry_key 'HKEY_LOCAL_MACHINE/Software/Microsoft/Windows/CurrentVersion/policies/system' do
+      values [
+              { name: 'legalnoticecaption', type: :string, data: new_resource.name.to_s },
+              { name: 'legalnoticetext', type: :string, data: new_resource.content.to_s },
+             ]
+      action :delete
+    end
+  else
+    file '/etc/motd' do
+      action :delete
     end
   end
 end
