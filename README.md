@@ -21,6 +21,15 @@ motd 'secure system messsage' do
 end
 ```
 
+- pass your own template to the motd (**only supported for Linux**)
+
+```ruby
+motd 'messsage' do
+  source 'custom_motd.erb'
+  cookbook 'motd'
+end
+```
+
 ## Supported Systems
 
 ```YAML

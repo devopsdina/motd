@@ -31,7 +31,7 @@ session    optional     pam_keyinit.so force revoke
 # This includes a dynamically generated part from /run/motd.dynamic
 # and a static (admin-editable) part from /etc/motd.
 session    optional     pam_motd.so  motd=/etc/motd
-# session    optional     pam_motd.so noupdate # Commented out by Chef
+# session    optional     pam_motd.so noupdate # Commented out by CHEF for motd to appear once.
 
 # Print the status of the user's mailbox upon successful login.
 session    optional     pam_mail.so standard noenv # [1]
