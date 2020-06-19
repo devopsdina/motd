@@ -1,4 +1,5 @@
 resource_name :motd
+provides :motd
 
 default_action :create
 
@@ -8,6 +9,10 @@ property :cookbook, String, name_property: true  # use only if content is not pr
 
 action :create do
   if platform_family?('windows')
+    if new_resource.source || new_resource.cookbook
+      Chef::Log.fatal('Windows does not support custom motd templates')
+      raise 'Windows only supports the content property'
+    end
     # windows motd settings
     registry_key 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policies\system' do
       values [
@@ -17,6 +22,11 @@ action :create do
       action :create
     end
   else
+    if new_resource.source && new_resource.content
+      Chef::Log.fatal('content and source are mutually exclusive')
+      raise 'Use the content OR source property'
+    end
+
     permissions = '0644'
 
     # is this machine using update-motd?

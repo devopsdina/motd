@@ -17,9 +17,9 @@ platforms:
   - name: Windows2016
     provisioner:
       product_version: latest
-      install_strategy: once
+      install_strategy: always # chef 12 is on this image, so always install
     driver:
-      box: peru/windows-server-2016-standard-x64-eval
+      box: mwrock/Windows2016
     transport:
       transport_name: winrm
       elevated: true
@@ -111,7 +111,5 @@ suites:
       - recipe[motd::default]
 
   - name: complex
-    runlist:
+    run_list:
       - recipe[motd::complex]
-    excludes:
-      - Windows2016
