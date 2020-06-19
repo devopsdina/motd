@@ -17,7 +17,7 @@ platforms:
   - name: Windows2016
     provisioner:
       product_version: latest
-      install_strategy: always #chef 12 is on this image, so always install
+      install_strategy: always # chef 12 is on this image, so always install
     driver:
       box: mwrock/Windows2016
     transport:
@@ -107,7 +107,9 @@ platforms:
 
 suites:
   - name: default
-    verifier:
-      inspec_tests:
-        - test/integration/default
-    attributes:
+    run_list:
+      - recipe[motd::default]
+
+  - name: complex
+    run_list:
+      - recipe[motd::complex]
