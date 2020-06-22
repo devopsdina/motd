@@ -3,9 +3,9 @@ provides :motd
 
 default_action :create
 
-property :content, String, name_property: true
-property :source, String, name_property: true # use only if content is not provided; LINUX ONLY
-property :cookbook, String, name_property: true  # use only if content is not provided; LINUX ONLY
+property :content, String
+property :source, String # use only if content is not provided; LINUX ONLY
+property :cookbook, String # use only if content is not provided; LINUX ONLY
 
 action :create do
   if platform_family?('windows')
@@ -24,7 +24,7 @@ action :create do
   else
     if new_resource.source && new_resource.content
       Chef::Log.fatal('content and source are mutually exclusive')
-      raise 'Use the content OR source property'
+      raise 'Use the content property OR source property'
     end
 
     permissions = '0644'

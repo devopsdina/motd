@@ -97,9 +97,6 @@ platforms:
       ssh_key: ~/.ssh/id_rsa
 
   - name: rhel8
-    provisioner:
-      product_version: latest
-      install_strategy: once
     driver:
       box: generic/rhel8
     transport:
