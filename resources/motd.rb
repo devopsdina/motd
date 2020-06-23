@@ -1,8 +1,6 @@
 resource_name :motd
 provides :motd
 
-default_action :create
-
 property :content, String
 property :source, String # use only if content is not provided; LINUX ONLY
 property :cookbook, String # use only if content is not provided; LINUX ONLY
