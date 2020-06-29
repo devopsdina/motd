@@ -35,17 +35,14 @@ action :create do
     end
 
     if platform_family?('debian')
-      version_9 = node[platform_version].to_f >= 9.0
-
       # For debian systems, comment out pam_motd.so noupdate from sshd for motd to appear only once.
-      template '/etc/pam.d/sshd' do
-        source 'sshd.erb'
-        variables(
-          debian_version_9: version_9
-        )
-        mode permissions
-        action :create
-      end
+      filepath = '/etc/pam.d/sshd'
+      raise "File #{filepath} not found" unless ::File.exist?(filepath)
+      search = /^session    optional     pam_motd.so noupdate/
+      replace = '# session    optional     pam_motd.so noupdate # COMMENTED OUT BY CHEF'
+      current_file = Chef::Util::FileEdit.new(filepath)
+      current_file.search_file_replace_line(search, replace)
+      current_file.write_file
     end
 
     if new_resource.source
